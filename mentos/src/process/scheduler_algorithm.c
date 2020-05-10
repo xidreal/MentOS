@@ -19,7 +19,15 @@ task_struct *pick_next_task(runqueue_t *runqueue, time_t delta_exec)
 #if defined(SCHEDULER_RR)
 	//==== Implementatin of the Round-Robin Scheduling algorithm ============
 
+	// get the next process after the current one
+	list_head *nNode = runqeue->curr->run_list.next;
 
+	// check if we reached the head of list_head
+	if (nNode == &runqueue->queue)
+		nNode = nNode->next;
+
+	// get the task_struct
+	task_struct *next = list_entry(nNode, struct task_struct, run_list);
 
 	//=======================================================================
 #elif defined(SCHEDULER_PRIORITY)
@@ -60,14 +68,23 @@ task_struct *pick_next_task(runqueue_t *runqueue, time_t delta_exec)
 	// Update vruntime of the current process.
 	// ...
 
+	// Get the first element of the list
+	next = // ...
+
+	// Get its virtual runtime.
+	time_t min = // ...
+
 	// Inter over the runqueue to find the task with the smallest vruntime value
 	// ...
+
 
 	//========================================================================
 #else
 #error "You should enable a scheduling algorithm!"
 #endif
-	assert(next && "No valid task selected. Have you implemented a scheduling algorithm?");
+	assert(next && "No valid task selected.");
+
+	//dbg_print("Selected %d\n", next->pid);
 
 	return next;
 }
