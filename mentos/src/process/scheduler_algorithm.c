@@ -20,14 +20,14 @@ task_struct *pick_next_task(runqueue_t *runqueue, time_t delta_exec)
 	//==== Implementatin of the Round-Robin Scheduling algorithm ============
 
 	// get the next process after the current one
-	list_head *nNode = runqeue->curr->run_list.next;
+	list_head *nNode = runqueue->curr->run_list.next;
 
 	// check if we reached the head of list_head
 	if (nNode == &runqueue->queue)
 		nNode = nNode->next;
 
 	// get the task_struct
-	task_struct *next = list_entry(nNode, struct task_struct, run_list);
+	next = list_entry(nNode, struct task_struct, run_list);
 
 	//=======================================================================
 #elif defined(SCHEDULER_PRIORITY)
